@@ -20,7 +20,7 @@ import { z } from "zod";
 import LoginFormButton from "./form-button";
 import { PasswordInput } from "@/components/password-input";
 import { useSearchParams } from "next/navigation";
-import { logIn } from "@/actions/user";
+import { signIn } from "@/actions/user";
 
 type TLoginSchema = z.infer<typeof LoginSchema>;
 
@@ -28,13 +28,13 @@ export default function LoginForm() {
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl") || "";
   const [logInError, dispatchLogIn] = useFormState(
-    logIn.bind(null, callbackUrl),
+    signIn.bind(null, callbackUrl),
     undefined,
   );
 
   useEffect(() => {
-    if (logInError?.error) {
-      toast.error(logInError.error);
+    if (logInError?.status === "failed") {
+      toast.error(logInError.message);
     }
   }, [logInError]);
 

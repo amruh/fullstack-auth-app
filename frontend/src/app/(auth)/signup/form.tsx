@@ -40,10 +40,10 @@ export default function SignUpForm() {
 
     const result = await signUp(values);
 
-    if (result?.error) {
-      toast.error(result.error);
+    if (result?.status === 'failed') {
+      toast.error(result.message);
     } else {
-      toast.success("Sign Up complete, you can login now");
+      toast.success("Sign up complete, you can login now.");
     }
 
     toast.dismiss("sign-up-processing");
