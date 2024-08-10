@@ -72,9 +72,7 @@ export const signIn = async (
   });
 
   const result = await response.json();
-  console.log(result);
   
-
   if (!response.ok) {
     return {
       status: result.status as string,

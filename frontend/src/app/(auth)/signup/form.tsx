@@ -27,6 +27,7 @@ export default function SignUpForm() {
       name: "",
       email: "",
       password: "",
+      confirmPassword: "",
     },
   });
   const {
@@ -40,7 +41,7 @@ export default function SignUpForm() {
 
     const result = await signUp(values);
 
-    if (result?.status === 'failed') {
+    if (result?.status === "failed") {
       toast.error(result.message);
     } else {
       toast.success("Sign up complete, you can login now.");
@@ -99,6 +100,23 @@ export default function SignUpForm() {
                 />
               </FormControl>
               <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={control}
+          name="confirmPassword"
+          render={({ field }) => (
+            <FormItem className="mb-5 space-y-1">
+              <FormLabel className="">Confirm Password</FormLabel>
+              <FormControl className="col-span-3">
+                <PasswordInput
+                  {...field}
+                  disabled={isSubmitting}
+                  placeholder="********"
+                />
+              </FormControl>
+              <FormMessage className="col-span-3" />
             </FormItem>
           )}
         />
