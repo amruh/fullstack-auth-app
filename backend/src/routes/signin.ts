@@ -42,8 +42,20 @@ signInRouter.post(
       });
     }
 
+    await prisma.user.update({
+      where: {
+        id: existingUser.id,
+      },
+      data: {
+        signInCount: {
+          increment: 1,
+        },
+        lastLogin: new Date().toISOString(),
+      },
+    });
+
     const session = await lucia.createSession(existingUser.id, {});
-    const cookie = lucia.createSessionCookie(session.id).serialize();
-    res.header("Set-Cookie", cookie).json({ accessToken: session });
+    const sessionCookie = lucia.createSessionCookie(session.id).serialize();
+    res.header("Set-Cookie", sessionCookie).json({ accessToken: session });
   }
 );
