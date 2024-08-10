@@ -9,8 +9,8 @@ import { signupRouter } from "./routes/signup.js";
 import { logoutRouter } from "./routes/logout.js";
 import { verifyRequestOrigin } from "lucia";
 import { googleSignUpRouter } from "./routes/google.js";
-import { parseCookies } from "oslo/cookie";
 import { facebookSignUpRouter } from "./routes/facebook.js";
+import { userRouter } from "./routes/user.js";
 
 const app: Express = express();
 const port = process.env.PORT || 3001;
@@ -62,24 +62,14 @@ app.use(async (req, res, next) => {
   return next();
 });
 
-// get user info
-app.get("/api/user-info", async (req, res) => {
-  const cookieHeader = req.headers.cookie;
-  const sessionId = lucia.readSessionCookie(cookieHeader ?? "");
-
-  if (!sessionId) {
-    res.status(403).json({ message: "Not Authenticated" });
-  } else {
-    res.json({
-      message: "User Authenticated!",
-      data: {
-        ...res.locals.user,
-      },
-    });
-  }
-});
-
-app.use(signInRouter, signupRouter, logoutRouter, googleSignUpRouter, facebookSignUpRouter);
+app.use(
+  signInRouter,
+  signupRouter,
+  logoutRouter,
+  googleSignUpRouter,
+  facebookSignUpRouter,
+  userRouter
+);
 
 app.listen(port, () => {
   console.log(`[server]: Server is running at http://localhost:${port}`);

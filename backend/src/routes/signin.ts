@@ -42,6 +42,13 @@ signInRouter.post(
       });
     }
 
+    if(!existingUser.emailVerified && existingUser.hashedPassword){
+      return res.status(400).json({
+        status: "failed",
+        message: "Please verify your email first",
+      });
+    }
+
     await prisma.user.update({
       where: {
         id: existingUser.id,

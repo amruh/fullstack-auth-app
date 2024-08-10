@@ -3,6 +3,8 @@ import { hash } from "@node-rs/argon2";
 import { prisma } from "../lib/db.js";
 import { validateData } from "../middleware/validation.js";
 import { SignUpSchema } from "../schemas/schemas.js";
+import { generateVerificationToken } from "../lib/token.js";
+import { sendVerificationLinkEmail } from "../lib/mail.js";
 
 export const signupRouter = express.Router();
 
@@ -41,9 +43,16 @@ signupRouter.post(
         },
       });
 
+      const verificationToken = await generateVerificationToken(email);
+
+      await sendVerificationLinkEmail(
+        verificationToken.email,
+        verificationToken.token
+      );
+
       return res.status(200).json({
         status: "success",
-        message: "Signup success, You can login now",
+        message: "Check your email, we just send a verification link",
       });
     } catch (error) {
       console.log(error);

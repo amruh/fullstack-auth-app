@@ -1,6 +1,5 @@
 "use client";
 
-// import { logIn } from "@/actions/user";
 import {
   Form,
   FormControl,
@@ -21,6 +20,7 @@ import LoginFormButton from "./form-button";
 import { PasswordInput } from "@/components/password-input";
 import { useSearchParams } from "next/navigation";
 import { signIn } from "@/actions/user";
+import Link from "next/link";
 
 type TLoginSchema = z.infer<typeof LoginSchema>;
 
@@ -87,6 +87,14 @@ export default function LoginForm() {
             </FormItem>
           )}
         />
+        <div className="mt-3 flex justify-end">
+          <Link
+            className="text-right text-xs hover:underline"
+            href="/password-reset/send-reset-link"
+          >
+            Forgot password?
+          </Link>
+        </div>
         <LoginFormButton />
       </form>
     </Form>

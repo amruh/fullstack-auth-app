@@ -9,7 +9,7 @@ datasource db {
 
 model User {
   id             String         @id @default(cuid())
-  username       String?        @unique
+  username       String?        
   email          String?        @unique
   hashedPassword String?
   signInCount    Int            @default(0)
@@ -22,7 +22,7 @@ model User {
 
 model Session {
   id        String   @id
-  userId    String
+  userId    String   @unique
   expiresAt DateTime
 
   user User @relation(references: [id], fields: [userId], onDelete: Cascade)
@@ -34,4 +34,18 @@ model OAuthAccount {
   userId         String
 
   user User @relation(references: [id], fields: [userId], onDelete: Cascade)
+}
+
+model EmailVerificationToken {
+  id      String   @id @default(cuid())
+  token   String   @unique
+  email   String   @unique
+  expires DateTime
+}
+
+model PasswordResetToken {
+  id      String   @id @default(cuid())
+  token   String   @unique
+  email   String   @unique
+  expires DateTime
 }
