@@ -17,12 +17,18 @@ import { redirect, useSearchParams } from "next/navigation";
 import { PasswordInput } from "@/components/password-input";
 import { resetPassword } from "@/actions/password-reset";
 import { toast } from "sonner";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function NewPasswordForm() {
   const [success, setSuccess] = useState(false);
   const searchParams = useSearchParams();
   const token = searchParams.get("token");
+  
+  useEffect(() => {
+    if (!token) {
+      toast.error("Missing Token");
+    }
+  }, [token]);
 
   const form = useForm<z.infer<typeof NewPasswordSchema>>({
     resolver: zodResolver(NewPasswordSchema),

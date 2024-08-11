@@ -29,7 +29,7 @@ app.use((req, res, next) => {
 
   if (
     !hostHeader ||
-    !verifyRequestOrigin("http://localhost:3001", [hostHeader])
+    !verifyRequestOrigin(`http://localhost:${port}`, [hostHeader])
   ) {
     return res.status(403).end();
   }

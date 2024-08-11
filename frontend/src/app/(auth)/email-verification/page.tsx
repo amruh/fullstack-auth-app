@@ -24,6 +24,7 @@ export default function EmailVerificationForm() {
 
     if (!token) {
       toast.error("Missing token");
+      setError(true);
       return;
     }
 
@@ -71,13 +72,19 @@ export default function EmailVerificationForm() {
               </span>
             </div>
           ) : (
-            <p className="text-sm">
-              You can{" "}
-              <span className="font-semibold">
-                <Link href="/signin">Sign In</Link>
-              </span>{" "}
-              now
-            </p>
+            <div>
+              {!token ? (
+                <p className="text-sm">Missing Token!</p>
+              ) : (
+                <p className="text-sm">
+                  You can{" "}
+                  <span className="font-semibold">
+                    <Link href="/signin">Sign In</Link>
+                  </span>{" "}
+                  now
+                </p>
+              )}
+            </div>
           )}
         </div>
       </CardContent>

@@ -1,11 +1,12 @@
 import { Button } from "@/components/ui/button";
-import { getSessionCookies } from "@/lib/cookies";
+import { cookies } from "next/headers";
 import Link from "next/link";
 
 export default function Home() {
-  const session = getSessionCookies();
+  const session = cookies().get("auth_session");
   return (
-    <main className="flex h-screen items-center justify-center">
+    <main className="flex h-screen flex-col items-center justify-center gap-y-10">
+      <h1 className="font-bold text-4xl">Full Stack Authentication Flow</h1>
       <div className="flex w-44 flex-col gap-y-2">
         {session ? (
           <Button>

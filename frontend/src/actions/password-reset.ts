@@ -44,6 +44,12 @@ export const sendResetLink = async (values: unknown) => {
 };
 
 export const resetPassword = async (values: unknown, token: string | null) => {
+  if(!token) {
+    return {
+      message: "Missing Token",
+    }
+  }
+
   const validatedFields = NewPasswordSchema.safeParse(values);
 
   if (!validatedFields.success) {
