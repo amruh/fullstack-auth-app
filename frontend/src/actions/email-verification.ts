@@ -8,6 +8,7 @@ export async function emailVerification(token: string) {
         headers: new Headers({ "Content-Type": "application/json" }),
         method: "POST",
         body: JSON.stringify({ token }),
+        cache: 'no-store',
       },
     );
 

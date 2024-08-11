@@ -48,3 +48,9 @@ export const NewPasswordSchema = NewPassword.refine(
     path: ["confirmPassword"],
   }
 );
+
+export const UpdateUserSchema = z.object({
+  username: z
+    .string({ message: "Please provide a username" })
+    .min(4, "Username must have at least 4 characters "),
+});

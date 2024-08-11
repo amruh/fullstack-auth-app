@@ -4,27 +4,88 @@ import { generatePasswordResetToken } from "../lib/token.js";
 import { sendPasswordResetLinkEmail } from "../lib/mail.js";
 import { hash } from "@node-rs/argon2";
 import { validateData } from "../middleware/validation.js";
-import { NewPasswordSchema } from "../schemas/schemas.js";
-import { lucia } from "../lib/auth.js";
+import { NewPasswordSchema, UpdateUserSchema } from "../schemas/schemas.js";
+import { authenticate } from "../middleware/authenticate.js";
 
 export const userRouter = express.Router();
 
-userRouter.get("/api/user-info", async (req, res) => {
-  const cookieHeader = req.headers.cookie;
-  const sessionId = lucia.readSessionCookie(cookieHeader ?? "");
-
-  if (!sessionId) {
-    res.status(403).json({ message: "Not Authenticated" });
-  } else {
-    res.json({
-      message: "User Authenticated!",
-      data: {
-        ...res.locals.user,
-      },
-    });
-  }
+// User information
+userRouter.get("/api/user/info", authenticate, async (req, res) => {
+  res.json({
+    message: "User Authenticated!",
+    data: {
+      ...res.locals.user,
+    },
+  });
 });
 
+// List users in dashboard
+userRouter.get("/api/users", authenticate, async (req, res) => {
+  const users = await prisma.user.findMany({
+    select: {
+      id: true,
+      username: true,
+      signInCount: true,
+      lastLogin: true,
+      lastLogout: true,
+      createdAt: true,
+      hashedPassword: false,
+    },
+    orderBy: {
+      username: "asc"
+    }
+  });
+
+  res.json({
+    message: "User Authenticated!",
+    data: users,
+  });
+});
+
+// Update profile (username)
+userRouter.put(
+  "/api/user/:id",
+  authenticate,
+  validateData(UpdateUserSchema),
+  async (req, res) => {
+    const { id } = req.params;
+    const { username } = req.body;
+
+    if (!id) {
+      return res.status(400).json({ success: false, message: "Bad Request" });
+    }
+
+    const findUser = await prisma.user.findUnique({
+      where: { id },
+    });
+
+    if (!findUser) {
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found" });
+    }
+
+    const updatedUser = await prisma.user.update({
+      where: {
+        id: findUser.id,
+      },
+      data: {
+        username,
+      },
+    });
+
+    const { hashedPassword, emailVerified, createdAt, email, ...rest } =
+      updatedUser;
+
+    res.json({
+      success: true,
+      message: "Profile update successfully",
+      data: rest,
+    });
+  }
+);
+
+// Send email verification link
 userRouter.post("/api/user/send-email-verification", async (req, res) => {
   const { token } = req.body;
 
@@ -66,6 +127,7 @@ userRouter.post("/api/user/send-email-verification", async (req, res) => {
   res.status(200).json({ message: "Email verified." });
 });
 
+// Send password reset link
 userRouter.post("/api/user/send-password-reset-link", async (req, res) => {
   const { email } = req.body;
 
@@ -105,6 +167,7 @@ userRouter.post("/api/user/send-password-reset-link", async (req, res) => {
     .json({ message: "Password reset link has been sent to your email." });
 });
 
+// Password reset handle
 userRouter.post(
   "/api/user/password-reset",
   validateData(NewPasswordSchema),

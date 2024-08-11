@@ -1,5 +1,6 @@
 "use server";
 
+import { getSessionCookies } from "@/lib/cookies";
 import { LoginSchema, SignUpSchema } from "@/schemas";
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
@@ -72,7 +73,7 @@ export const signIn = async (
   });
 
   const result = await response.json();
-  
+
   if (!response.ok) {
     return {
       status: result.status as string,
@@ -89,24 +90,21 @@ export const signIn = async (
   });
 
   revalidatePath("/", "layout");
-  redirect("/dashboard");
-
+  redirect("/app/dashboard");
 };
 
 export const logOut = async () => {
-  const cookieStore = cookies();
-  const cookie = cookieStore.get("auth_session");
+  const cookie = getSessionCookies();
 
   const response = await fetch("http://localhost:3001/api/logout", {
     method: "POST",
     headers: {
-      Cookie: `${cookie?.name}=${cookie?.value}`,
+      Cookie: `${cookie.name}=${cookie.value}`,
     },
   });
 
   const result = await response.json();
 
-  console.log(result);
   if (!response.ok) {
     return {
       status: result.status as string,
@@ -118,4 +116,42 @@ export const logOut = async () => {
 
   revalidatePath("/", "layout");
   redirect("/signin");
+};
+
+export const updateProfile = async (username: string, id: string) => {
+  const cookie = getSessionCookies();
+
+  try {
+    const response = await fetch(`http://localhost:3001/api/user/${id}`, {
+      method: "PUT",
+      headers: new Headers({
+        "Content-Type": "application/json",
+        Cookie: `${cookie.name}=${cookie.value}`,
+      }),
+      body: JSON.stringify({ username }),
+      cache: "no-store",
+    });
+
+    const result = await response.json();
+
+    if (!response.ok) {
+      return {
+        success: result.success as boolean,
+        message: result.message as string,
+      };
+    }
+
+    revalidatePath("/", "layout");
+
+    return {
+      success: result.success as boolean,
+      message: result.message as string,
+    };
+  } catch (error) {
+    console.log(error);
+    return {
+      success: false,
+      message: "something wen't wrong",
+    };
+  }
 };

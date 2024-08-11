@@ -1,18 +1,12 @@
 import express from "express";
 import { lucia } from "../lib/auth.js";
 import { prisma } from "../lib/db.js";
+import { authenticate } from "../middleware/authenticate.js";
 
 export const logoutRouter = express.Router();
 
-logoutRouter.post("/api/logout", async (_, res) => {
-  if (!res.locals.session) {
-    return res.status(401).json({
-      status: "failed",
-      message: "Unauthorized",
-    });
-  }
-
-  await lucia.invalidateSession(res.locals.session.id);
+logoutRouter.post("/api/logout", authenticate, async (_, res) => {
+  await lucia.invalidateSession(res.locals.session?.id!);
   await prisma.user.update({
     where: {
       id: res.locals.user?.id!,

@@ -11,6 +11,7 @@ import { verifyRequestOrigin } from "lucia";
 import { googleSignUpRouter } from "./routes/google.js";
 import { facebookSignUpRouter } from "./routes/facebook.js";
 import { userRouter } from "./routes/user.js";
+import { dashboardRouter } from "./routes/dashboard.js";
 
 const app: Express = express();
 const port = process.env.PORT || 3001;
@@ -68,7 +69,8 @@ app.use(
   logoutRouter,
   googleSignUpRouter,
   facebookSignUpRouter,
-  userRouter
+  userRouter,
+  dashboardRouter
 );
 
 app.listen(port, () => {

@@ -20,6 +20,7 @@ export const sendResetLink = async (values: unknown) => {
         headers: new Headers({ "Content-Type": "application/json" }),
         method: "POST",
         body: JSON.stringify({ email }),
+        cache: "no-store",
       },
     );
 
@@ -60,6 +61,7 @@ export const resetPassword = async (values: unknown, token: string | null) => {
         headers: new Headers({ "Content-Type": "application/json" }),
         method: "POST",
         body: JSON.stringify({ token, password, confirmPassword }),
+        cache: "no-store",
       },
     );
 

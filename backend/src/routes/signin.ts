@@ -42,7 +42,7 @@ signInRouter.post(
       });
     }
 
-    if(!existingUser.emailVerified && existingUser.hashedPassword){
+    if (!existingUser.emailVerified && existingUser.hashedPassword) {
       return res.status(400).json({
         status: "failed",
         message: "Please verify your email first",
@@ -63,6 +63,9 @@ signInRouter.post(
 
     const session = await lucia.createSession(existingUser.id, {});
     const sessionCookie = lucia.createSessionCookie(session.id).serialize();
-    res.header("Set-Cookie", sessionCookie).json({ accessToken: session });
+    res
+      .header("Set-Cookie", sessionCookie)
+      .json({ accessToken: session })
+      // .redirect("http://localhost:3000/signin");
   }
 );

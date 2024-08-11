@@ -9,13 +9,14 @@ datasource db {
 
 model User {
   id             String         @id @default(cuid())
-  username       String?        
+  username       String?
   email          String?        @unique
   hashedPassword String?
   signInCount    Int            @default(0)
   emailVerified  Boolean?       @default(false)
   lastLogin      DateTime?
   lastLogout     DateTime?
+  createdAt      DateTime       @default(now())
   sessions       Session[]
   OAuthAccount   OAuthAccount[]
 }
@@ -24,6 +25,7 @@ model Session {
   id        String   @id
   userId    String   @unique
   expiresAt DateTime
+  createdAt DateTime @default(now())
 
   user User @relation(references: [id], fields: [userId], onDelete: Cascade)
 }

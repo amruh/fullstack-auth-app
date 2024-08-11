@@ -1,15 +1,15 @@
 import { Button } from "@/components/ui/button";
-import { cookies } from "next/headers";
+import { getSessionCookies } from "@/lib/cookies";
 import Link from "next/link";
 
 export default function Home() {
-  const session = cookies().get("auth_session");
+  const session = getSessionCookies();
   return (
     <main className="flex h-screen items-center justify-center">
       <div className="flex w-44 flex-col gap-y-2">
         {session ? (
           <Button>
-            <Link href="/dashboard" className="w-full">
+            <Link href="/app/dashboard" className="w-full">
               Dashboard
             </Link>
           </Button>
