@@ -52,7 +52,7 @@ signupRouter.post(
 
       return res.status(200).json({
         status: "success",
-        message: "Check your email, we just send a verification link",
+        message: "Check your email, we just sent a verification link",
       });
     } catch (error) {
       console.log(error);

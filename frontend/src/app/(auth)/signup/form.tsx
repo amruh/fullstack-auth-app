@@ -44,7 +44,7 @@ export default function SignUpForm() {
     if (result?.status === "failed") {
       toast.error(result.message);
     } else {
-      toast.success("Check your email, we just send a verification link");
+      toast.success("Check your email, we just sent a verification link");
     }
 
     toast.dismiss("sign-up-processing");

@@ -4,17 +4,14 @@ import React, { useState } from "react";
 import {
   AvatarIcon,
   CheckIcon,
-  Cross1Icon,
   Cross2Icon,
   Pencil2Icon,
 } from "@radix-ui/react-icons";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { sleep } from "@/lib/utils";
 import { updateProfile } from "@/actions/user";
 import { toast } from "sonner";
-import { revalidatePath } from "next/cache";
 
 type UserInfoCardProps = {
   userInfo: {
@@ -43,7 +40,6 @@ export default function UserProfileCard({ userInfo }: UserInfoCardProps) {
     toast.dismiss("update-profile-processing");
     setIsLoading(false);
     setIsEdit(false);
-    setUsername(userInfo.username);
   };
 
   return (

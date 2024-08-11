@@ -9,7 +9,7 @@ export const sendVerificationLinkEmail = async (
   const confirmLink = `${domain}/email-verification?token=${token}`;
 
   await resend.emails.send({
-    from: "onboarding@resend.dev",
+    from: "onboarding@atigabungajaya.com",
     to: email,
     subject: "Confirm your email",
     html: `
@@ -27,7 +27,7 @@ export const sendPasswordResetLinkEmail = async (
   const resetLink = `${domain}/password-reset/new-password?token=${token}`;
 
   await resend.emails.send({
-    from: "onboarding@resend.dev",
+    from: "onboarding@atigabungajaya.com",
     to: email,
     subject: "Reset your password",
     html: `
