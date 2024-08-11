@@ -97,7 +97,7 @@ facebookSignUpRouter.get("/api/signup/facebook/callback", async (req, res) => {
   res
     .header("Set-Cookie", sessionCookie)
     .clearCookie("facebook_oauth_state")
-    .redirect("http://localhost:3000/signin");
+    .redirect(`${process.env.FRONTEND_DOMAIN}/signin`);
 });
 
 interface FacebookUser {

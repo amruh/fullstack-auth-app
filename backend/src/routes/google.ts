@@ -121,7 +121,7 @@ googleSignUpRouter.get("/api/signup/google/callback", async (req, res) => {
     .header("Set-Cookie", sessionCookie)
     .clearCookie("code_verifier")
     .clearCookie("google_oauth_state")
-    .redirect("http://localhost:3000/signin");
+    .redirect(`${process.env.FRONTEND_DOMAIN}/signin`);
 });
 
 interface GoogleUser {

@@ -15,7 +15,7 @@ export const sendResetLink = async (values: unknown) => {
 
   try {
     const response = await fetch(
-      "http://localhost:3001/api/user/send-password-reset-link",
+      `${process.env.NEXT_PUBLIC_API_URL}/api/user/send-password-reset-link`,
       {
         headers: new Headers({ "Content-Type": "application/json" }),
         method: "POST",
@@ -62,7 +62,7 @@ export const resetPassword = async (values: unknown, token: string | null) => {
 
   try {
     const response = await fetch(
-      "http://localhost:3001/api/user/password-reset",
+      `${process.env.NEXT_PUBLIC_API_URL}/api/user/password-reset`,
       {
         headers: new Headers({ "Content-Type": "application/json" }),
         method: "POST",

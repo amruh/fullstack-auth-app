@@ -9,7 +9,7 @@ export function GoogleButton() {
   return (
     <Button variant={"outline"} size={"lg"} className="space-x-3">
       <GoogleIcon />
-      <Link href="http://localhost:3001/api/signup/google" className="">
+      <Link href={`${process.env.NEXT_PUBLIC_API_URL}/api/signup/google`} className="">
         Using Google
       </Link>
     </Button>

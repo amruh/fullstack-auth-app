@@ -32,13 +32,13 @@ export const github = new GitHub(
 export const google = new Google(
   process.env.GOOGLE_CLIENT_ID!,
   process.env.GOOGLE_CLIENT_SECRET!,
-  "http://localhost:3001/api/signup/google/callback"
+  `${process.env.DOMAIN}/api/signup/google/callback`
 );
 
 export const facebook = new Facebook(
   process.env.FACEBOOK_CLIENT_ID!,
   process.env.FACEBOOK_CLIENT_SECRET!,
-  "http://localhost:3001/api/signup/facebook/callback"
+  `${process.env.DOMAIN}/api/signup/facebook/callback`
 );
 
 declare module "lucia" {

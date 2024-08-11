@@ -6,7 +6,7 @@ export const fetchDashboardSummary = async () => {
   
   try {
     const response = await fetch(
-      "http://localhost:3001/api/dashboard/summary",
+      `${process.env.NEXT_PUBLIC_API_URL}/api/dashboard/summary`,
       {
         headers: {
           Cookie: `${session.name}=${session.value}`,

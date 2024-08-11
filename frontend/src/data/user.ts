@@ -11,12 +11,11 @@ type UsersList = {
   createdAt: Date;
 };
 
-
 export const fetchUserInfo = async () => {
   const session = getSessionCookies();
-  
+
   try {
-    const response = await fetch("http://localhost:3001/api/user/info", {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user/info`, {
       headers: {
         Cookie: `${session.name}=${session.value}`,
       },
@@ -42,11 +41,11 @@ export const fetchUsersList = async () => {
   const session = getSessionCookies();
 
   try {
-    const response = await fetch("http://localhost:3001/api/users", {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/users`, {
       headers: {
         Cookie: `${session.name}=${session.value}`,
       },
-      cache: 'no-store',
+      cache: "no-store",
     });
     const users = (await response.json()) as {
       message: string;

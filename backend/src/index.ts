@@ -15,6 +15,7 @@ import { dashboardRouter } from "./routes/dashboard.js";
 
 const app: Express = express();
 const port = process.env.PORT || 3001;
+const domain = process.env.DOMAIN || "http://localhost:3001";
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -27,10 +28,7 @@ app.use((req, res, next) => {
 
   const hostHeader = req.headers.host ?? null;
 
-  if (
-    !hostHeader ||
-    !verifyRequestOrigin(`http://localhost:${port}`, [hostHeader])
-  ) {
+  if (!hostHeader || !verifyRequestOrigin(`${domain}`, [hostHeader])) {
     return res.status(403).end();
   }
   return next();
@@ -74,7 +72,7 @@ app.use(
 );
 
 app.listen(port, () => {
-  console.log(`[server]: Server is running at http://localhost:${port}`);
+  console.log(`[server]: Server is running at ${domain}`);
 });
 
 declare global {

@@ -66,6 +66,5 @@ signInRouter.post(
     res
       .header("Set-Cookie", sessionCookie)
       .json({ accessToken: session })
-      // .redirect("http://localhost:3000/signin");
   }
 );

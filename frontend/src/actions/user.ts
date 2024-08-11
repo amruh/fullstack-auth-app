@@ -13,15 +13,18 @@ export const signUp = async (values: unknown) => {
     return { status: "failed", message: "Invalid fields" };
   }
 
-  const response = await fetch("http://localhost:3001/api/signup/credentials", {
-    method: "POST",
-    headers: new Headers({ "Content-Type": "application/json" }),
-    body: JSON.stringify({
-      ...validatedFields.data,
-      username: validatedFields.data.name,
-    }),
-    cache: "no-store",
-  });
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/api/signup/credentials`,
+    {
+      method: "POST",
+      headers: new Headers({ "Content-Type": "application/json" }),
+      body: JSON.stringify({
+        ...validatedFields.data,
+        username: validatedFields.data.name,
+      }),
+      cache: "no-store",
+    },
+  );
 
   if (!response.ok) {
     const result = (await response.json()) as {
@@ -62,15 +65,18 @@ export const signIn = async (
     };
   }
 
-  const response = await fetch("http://localhost:3001/api/signin/credentials", {
-    method: "POST",
-    headers: new Headers({ "Content-Type": "application/json" }),
-    body: JSON.stringify({
-      email: validatedFields.data.email,
-      password: validatedFields.data.password,
-    }),
-    cache: "no-store",
-  });
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/api/signin/credentials`,
+    {
+      method: "POST",
+      headers: new Headers({ "Content-Type": "application/json" }),
+      body: JSON.stringify({
+        email: validatedFields.data.email,
+        password: validatedFields.data.password,
+      }),
+      cache: "no-store",
+    },
+  );
 
   const result = await response.json();
 
@@ -96,12 +102,15 @@ export const signIn = async (
 export const logOut = async () => {
   const cookie = getSessionCookies();
 
-  const response = await fetch("http://localhost:3001/api/logout", {
-    method: "POST",
-    headers: {
-      Cookie: `${cookie.name}=${cookie.value}`,
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/api/logout`,
+    {
+      method: "POST",
+      headers: {
+        Cookie: `${cookie.name}=${cookie.value}`,
+      },
     },
-  });
+  );
 
   const result = await response.json();
 
@@ -122,15 +131,18 @@ export const updateProfile = async (username: string, id: string) => {
   const cookie = getSessionCookies();
 
   try {
-    const response = await fetch(`http://localhost:3001/api/user/${id}`, {
-      method: "PUT",
-      headers: new Headers({
-        "Content-Type": "application/json",
-        Cookie: `${cookie.name}=${cookie.value}`,
-      }),
-      body: JSON.stringify({ username }),
-      cache: "no-store",
-    });
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/user/${id}`,
+      {
+        method: "PUT",
+        headers: new Headers({
+          "Content-Type": "application/json",
+          Cookie: `${cookie.name}=${cookie.value}`,
+        }),
+        body: JSON.stringify({ username }),
+        cache: "no-store",
+      },
+    );
 
     const result = await response.json();
 

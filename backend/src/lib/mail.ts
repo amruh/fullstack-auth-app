@@ -1,6 +1,6 @@
 import { Resend } from "resend";
 const resend = new Resend(process.env.RESEND_API_KEY);
-const domain = "http://localhost:3000";
+const domain = `${process.env.FRONTEND_DOMAIN}`;
 
 export const sendVerificationLinkEmail = async (
   email: string,
